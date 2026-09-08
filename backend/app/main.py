@@ -1,12 +1,20 @@
 """FastAPI application entry point."""
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from backend.app.schemas.valuation import ValuationRequest, ValuationResponse
 from backend.app.services.dcf import run_dcf
 from backend.app.services.market_data import fetch_company_financials, TickerNotFoundError
 
 app = FastAPI(title="Financial Valuation Platform API")
+
+app.add_middleware(
+       CORSMiddleware,
+       allow_origins=["http://localhost:3000"],
+       allow_methods=["*"],
+       allow_headers=["*"],
+   )
 
 
 @app.get("/api/v1/company/{ticker}")
