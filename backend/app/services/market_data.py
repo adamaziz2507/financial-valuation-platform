@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 
 import yfinance as yf
+from curl_cffi import requests as cffi_requests
 
 
 @dataclass(frozen=True)
@@ -20,7 +21,8 @@ class TickerNotFoundError(Exception):
 
 
 def fetch_company_financials(ticker: str) -> CompanyFinancials:
-    stock = yf.Ticker(ticker)
+    session = cffi_requests.Session(impersonate="chrome")
+    stock = yf.Ticker(ticker, session=session)
     info = stock.info
 
     if not info or info.get("regularMarketPrice") is None:
