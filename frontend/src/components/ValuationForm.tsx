@@ -34,7 +34,7 @@ export default function ValuationForm({ onSubmit, isLoading }: ValuationFormProp
           type="text"
           value={ticker}
           onChange={(e) => setTicker(e.target.value)}
-          className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+          className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-gray-900 font-semibold"
           required
         />
       </div>
@@ -48,7 +48,7 @@ export default function ValuationForm({ onSubmit, isLoading }: ValuationFormProp
           step="0.1"
           value={revenueGrowthPct}
           onChange={(e) => setRevenueGrowthPct(e.target.value)}
-          className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+          className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-gray-900 font-semibold"
           required
         />
       </div>
@@ -62,7 +62,7 @@ export default function ValuationForm({ onSubmit, isLoading }: ValuationFormProp
           step="0.1"
           value={operatingMarginPct}
           onChange={(e) => setOperatingMarginPct(e.target.value)}
-          className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+          className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-gray-900 font-semibold"
           required
         />
       </div>
@@ -74,7 +74,7 @@ export default function ValuationForm({ onSubmit, isLoading }: ValuationFormProp
           step="0.1"
           value={waccPct}
           onChange={(e) => setWaccPct(e.target.value)}
-          className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+          className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-gray-900 font-semibold"
           required
         />
       </div>
@@ -88,7 +88,7 @@ export default function ValuationForm({ onSubmit, isLoading }: ValuationFormProp
           step="0.1"
           value={terminalGrowthPct}
           onChange={(e) => setTerminalGrowthPct(e.target.value)}
-          className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+          className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-gray-900 font-semibold"
           required
         />
       </div>
