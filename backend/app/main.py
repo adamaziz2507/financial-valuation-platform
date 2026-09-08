@@ -13,10 +13,13 @@ from backend.app.services.market_data import fetch_company_financials, TickerNot
 app = FastAPI(title="Financial Valuation Platform API")
 
 app.add_middleware(
-       CORSMiddleware,
-       allow_origins=["http://localhost:3000"],
-       allow_methods=["*"],
-       allow_headers=["*"],
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "https://financial-valuation-platform-8i4otrkoy-adam-aziz1.vercel.app",
+    ],
+    allow_methods=["*"],
+    allow_headers=["*"],
    )
 
 
