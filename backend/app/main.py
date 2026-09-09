@@ -15,9 +15,10 @@ app = FastAPI(title="Financial Valuation Platform API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",
-        "https://financial-valuation-platform-8i4otrkoy-adam-aziz1.vercel.app",
-    ],
+       "http://localhost:3000",
+       "https://financial-valuation-platform.vercel.app",
+       "https://financial-valuation-platform-8i4otrkoy-adam-aziz1.vercel.app",
+   ],
     allow_methods=["*"],
     allow_headers=["*"],
    )
