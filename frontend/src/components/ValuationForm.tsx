@@ -9,11 +9,11 @@ interface ValuationFormProps {
 }
 
 export default function ValuationForm({ onSubmit, isLoading }: ValuationFormProps) {
-  const [ticker, setTicker] = useState("AAPL");
-  const [revenueGrowthPct, setRevenueGrowthPct] = useState("8");
-  const [operatingMarginPct, setOperatingMarginPct] = useState("30");
-  const [waccPct, setWaccPct] = useState("9");
-  const [terminalGrowthPct, setTerminalGrowthPct] = useState("2.5");
+const [ticker, setTicker] = useState("");
+const [revenueGrowthPct, setRevenueGrowthPct] = useState("");
+const [operatingMarginPct, setOperatingMarginPct] = useState("");
+const [waccPct, setWaccPct] = useState("");
+const [terminalGrowthPct, setTerminalGrowthPct] = useState("");
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -31,11 +31,12 @@ export default function ValuationForm({ onSubmit, isLoading }: ValuationFormProp
       <div>
         <label className="block text-sm font-medium text-gray-700">Ticker</label>
         <input
-          type="text"
-          value={ticker}
-          onChange={(e) => setTicker(e.target.value)}
-          className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-gray-900 font-semibold"
-          required
+         type="text"
+         value={ticker}
+         onChange={(e) => setTicker(e.target.value)}            
+         placeholder="e.g. AAPL"
+         className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-gray-900 font-semibold"
+         required
         />
       </div>
 
@@ -48,6 +49,7 @@ export default function ValuationForm({ onSubmit, isLoading }: ValuationFormProp
           step="0.1"
           value={revenueGrowthPct}
           onChange={(e) => setRevenueGrowthPct(e.target.value)}
+          placeholder="e.g. 8"
           className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-gray-900 font-semibold"
           required
         />
@@ -62,6 +64,7 @@ export default function ValuationForm({ onSubmit, isLoading }: ValuationFormProp
           step="0.1"
           value={operatingMarginPct}
           onChange={(e) => setOperatingMarginPct(e.target.value)}
+          placeholder="e.g. 30"
           className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-gray-900 font-semibold"
           required
         />
@@ -74,6 +77,7 @@ export default function ValuationForm({ onSubmit, isLoading }: ValuationFormProp
           step="0.1"
           value={waccPct}
           onChange={(e) => setWaccPct(e.target.value)}
+          placeholder="e.g. 9"
           className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-gray-900 font-semibold"
           required
         />
@@ -88,6 +92,7 @@ export default function ValuationForm({ onSubmit, isLoading }: ValuationFormProp
           step="0.1"
           value={terminalGrowthPct}
           onChange={(e) => setTerminalGrowthPct(e.target.value)}
+          placeholder="e.g. 2.5"
           className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-gray-900 font-semibold"
           required
         />
