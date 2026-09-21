@@ -7,7 +7,9 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.app.schemas.valuation import ValuationRequest, ValuationResponse
+from backend.app.schemas.valuation import SensitivityResponse
 from backend.app.services.dcf import run_dcf
+from backend.app.services.dcf import run_sensitivity_grid
 from backend.app.services.market_data import fetch_company_financials, TickerNotFoundError
 
 app = FastAPI(title="Financial Valuation Platform API")
@@ -48,3 +50,19 @@ def create_valuation(request: ValuationRequest):
         )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
+
+@app.post("/api/v1/valuation/sensitivity", response_model=SensitivityResponse)
+def create_sensitivity_analysis(request: ValuationRequest):
+    try:
+        financials = fetch_company_financials(request.ticker)
+    except TickerNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))
+
+    grid = run_sensitivity_grid(
+        request=request,
+        base_revenue=financials.ttm_revenue,
+        net_debt=financials.net_debt,
+        shares_outstanding=financials.shares_outstanding,
+    )
+
+    return SensitivityResponse(ticker=request.ticker.upper(), grid=grid)

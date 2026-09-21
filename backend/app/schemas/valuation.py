@@ -17,10 +17,24 @@ class YearlyProjection(BaseModel):
     unlevered_free_cash_flow: float
     discounted_cash_flow: float
 
-
 class ValuationResponse(BaseModel):
     ticker: str
     enterprise_value: float
     equity_value: float
     implied_share_price: float
     projections: list[YearlyProjection]
+
+class SensitivityCell(BaseModel):
+    wacc: float
+    terminal_growth_rate: float
+    implied_share_price: float
+
+
+class SensitivityResponse(BaseModel):
+    ticker: str
+    grid: list[SensitivityCell]
+
+
+class SensitivityResponse(BaseModel):
+    ticker: str
+    grid: list[SensitivityCell]

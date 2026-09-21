@@ -44,3 +44,35 @@ def run_dcf(request: ValuationRequest, base_revenue: float, net_debt: float, sha
         implied_share_price=implied_share_price,
         projections=projections,
     )
+
+WACC_STEPS = [-0.01, 0.0, 0.01]
+TERMINAL_GROWTH_STEPS = [-0.005, 0.0, 0.005]
+
+
+def run_sensitivity_grid(
+    request: ValuationRequest, base_revenue: float, net_debt: float, shares_outstanding: float
+) -> list[dict]:
+    grid = []
+
+    for wacc_offset in WACC_STEPS:
+        for growth_offset in TERMINAL_GROWTH_STEPS:
+            scenario_wacc = request.wacc + wacc_offset
+            scenario_terminal_growth = request.terminal_growth_rate + growth_offset
+
+            if scenario_wacc <= scenario_terminal_growth:
+                continue
+
+            scenario_request = request.model_copy(
+                update={"wacc": scenario_wacc, "terminal_growth_rate": scenario_terminal_growth}
+            )
+            result = run_dcf(scenario_request, base_revenue, net_debt, shares_outstanding)
+
+            grid.append(
+                {
+                    "wacc": round(scenario_wacc, 4),
+                    "terminal_growth_rate": round(scenario_terminal_growth, 4),
+                    "implied_share_price": round(result.implied_share_price, 2),
+                }
+            )
+
+    return grid

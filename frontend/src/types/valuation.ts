@@ -20,3 +20,14 @@ export interface ValuationResponse {
   implied_share_price: number;
   projections: YearlyProjection[];
 }
+
+export interface SensitivityCell {
+  wacc: number;
+  terminal_growth_rate: number;
+  implied_share_price: number;
+}
+
+export interface SensitivityResponse {
+  ticker: string;
+  grid: SensitivityCell[];
+}
