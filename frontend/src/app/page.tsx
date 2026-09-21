@@ -3,28 +3,37 @@
 import { useState } from "react";
 import ValuationForm from "@/components/ValuationForm";
 import ValuationResults from "@/components/ValuationResults";
-import { fetchValuation } from "@/lib/api";
-import { ValuationRequest, ValuationResponse } from "@/types/valuation";
+import SensitivityTable from "@/components/SensitivityTable";
+import { fetchValuation, fetchSensitivity } from "@/lib/api";
+import { ValuationRequest, ValuationResponse, SensitivityResponse } from "@/types/valuation";
 
 export default function Home() {
   const [result, setResult] = useState<ValuationResponse | null>(null);
+  const [sensitivity, setSensitivity] = useState<SensitivityResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(request: ValuationRequest) {
-    setIsLoading(true);
-    setError(null);
-    setResult(null);
+async function handleSubmit(request: ValuationRequest) {
+  setIsLoading(true);
+  setError(null);
+  setResult(null);
+  setSensitivity(null);
+
+  try {
+    const response = await fetchValuation(request);
+    setResult(response);
 
     try {
-      const response = await fetchValuation(request);
-      setResult(response);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
-    } finally {
-      setIsLoading(false);
+      const sensitivityResponse = await fetchSensitivity(request);
+      setSensitivity(sensitivityResponse);
+    } catch {
     }
+  } catch (err) {
+    setError(err instanceof Error ? err.message : "Something went wrong");
+  } finally {
+    setIsLoading(false);
   }
+}
 
   return (
     <main className="min-h-screen bg-gray-100 p-8">
@@ -49,7 +58,8 @@ export default function Home() {
                 {error}
               </div>
             )}
-            {result && <ValuationResults result={result} />}
+               {result && <ValuationResults result={result} />}
+               {sensitivity && <SensitivityTable sensitivity={sensitivity} />}
             {!result && !error && (
               <div className="text-gray-400 text-center py-12">
                 Results will appear here after you run a valuation.
