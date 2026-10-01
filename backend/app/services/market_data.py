@@ -5,7 +5,10 @@ from dataclasses import dataclass
 
 import requests
 
+from backend.app.services.cache import TTLCache
+
 FMP_BASE_URL = "https://financialmodelingprep.com/stable"
+CACHE_TTL_SECONDS = 3600
 
 
 @dataclass(frozen=True)
@@ -20,6 +23,9 @@ class CompanyFinancials:
 
 class TickerNotFoundError(Exception):
     """Raised when the ticker cannot be resolved via the data provider."""
+
+
+_financials_cache: TTLCache[CompanyFinancials] = TTLCache(ttl_seconds=CACHE_TTL_SECONDS)
 
 
 def _get_api_key() -> str:
@@ -41,7 +47,7 @@ def _fetch_first_result(endpoint: str, ticker: str, api_key: str, **extra_params
     return data[0]
 
 
-def fetch_company_financials(ticker: str) -> CompanyFinancials:
+def _fetch_from_provider(ticker: str) -> CompanyFinancials:
     api_key = _get_api_key()
 
     quote = _fetch_first_result("quote", ticker, api_key)
@@ -53,10 +59,22 @@ def fetch_company_financials(ticker: str) -> CompanyFinancials:
     operating_margin = operating_income / revenue if revenue else 0.0
 
     return CompanyFinancials(
-        ticker=ticker.upper(),
+        ticker=ticker,
         ttm_revenue=float(revenue),
         operating_margin=float(operating_margin),
         net_debt=float(balance_sheet["netDebt"]),
         shares_outstanding=float(income_statement["weightedAverageShsOut"]),
         current_price=float(quote["price"]),
     )
+
+
+def fetch_company_financials(ticker: str) -> CompanyFinancials:
+    normalised_ticker = ticker.upper()
+
+    cached = _financials_cache.get(normalised_ticker)
+    if cached is not None:
+        return cached
+
+    financials = _fetch_from_provider(normalised_ticker)
+    _financials_cache.set(normalised_ticker, financials)
+    return financials
