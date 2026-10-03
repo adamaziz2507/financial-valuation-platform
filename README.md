@@ -1,5 +1,7 @@
 # Financial Valuation Platform
 
+[![Backend Tests](https://github.com/adamaziz2507/financial-valuation-platform/actions/workflows/tests.yml/badge.svg)](https://github.com/adamaziz2507/financial-valuation-platform/actions/workflows/tests.yml)
+
 A full-stack financial valuation platform that estimates a company's intrinsic
 equity value using a 5-year Discounted Cash Flow (DCF) model. Given a stock
 ticker and a set of assumptions, it retrieves live company fundamentals,
@@ -134,6 +136,6 @@ pytest backend/tests -v
 - [x] Next.js + Tailwind frontend
 - [x] Deployed to Render (backend) + Vercel (frontend)
 - [ ] Sensitivity analysis (WACC × terminal growth grid)
+- [ ] CI pipeline (GitHub Actions) running tests on every push
 - [ ] Interactive assumption sliders with real-time recalculation
 - [ ] Dockerized local development environment
-- [ ] CI pipeline (GitHub Actions) running tests on every push
